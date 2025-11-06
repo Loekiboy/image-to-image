@@ -286,6 +286,11 @@
     </div>
 
     <script>
+        // Configuration constants
+        const MAX_IMAGE_SIZE = 400; // Maximum dimension for image processing (performance optimization)
+        const PROGRESS_UPDATE_INTERVAL = 10; // Update progress bar every N rows
+        const UI_UPDATE_DELAY = 100; // Delay in ms to allow UI to update before heavy processing
+        
         // Global variables
         let sourceImageData = null;
         let targetImageData = null;
@@ -355,7 +360,7 @@
             const tempCtx = tempCanvas.getContext('2d');
             
             // Resize images to a manageable size for performance
-            const maxSize = 400;
+            const maxSize = MAX_IMAGE_SIZE;
             let width = img.width;
             let height = img.height;
             
@@ -426,7 +431,7 @@
 
                 // For each pixel in target image, find best matching pixel in source
                 for (let ty = 0; ty < targetHeight; ty++) {
-                    if (ty % 10 === 0) {
+                    if (ty % PROGRESS_UPDATE_INTERVAL === 0) {
                         const progress = (ty / targetHeight) * 100;
                         progressFill.style.width = progress + '%';
                         status.textContent = `Verwerken: ${Math.round(progress)}%`;
@@ -487,7 +492,7 @@
 
                 // Draw initial source image
                 drawSourceImage();
-            }, 100);
+            }, UI_UPDATE_DELAY);
         }
 
         // Draw the source image on canvas
